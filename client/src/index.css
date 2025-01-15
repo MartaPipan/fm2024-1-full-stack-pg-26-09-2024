@@ -6,3 +6,8 @@ a {
   color: inherit;
   text-decoration: none;
 }
+form, label{
+  display: flex;
+  flex-direction: column;
+}
+ 
