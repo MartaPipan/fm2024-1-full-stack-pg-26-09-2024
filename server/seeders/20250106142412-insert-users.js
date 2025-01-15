@@ -3,7 +3,7 @@
 const generateUser = (key) => ({
   first_name: `Name${key}`,
   last_name: `LastName${key}`,
-  email:`email${key}`,
+  email:`email${key}@gmail.com`,
   password_hash: `password_hash${key}`,
   birthday: new Date(1970, key, key),
   is_male: Math.random()>0.5,

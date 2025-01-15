@@ -1,47 +1,39 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { getAllUsers } from "../api";
 
-export const getUsers = createAsyncThunk('users/getUsers',
-    // async ({args}, thunkAPI)   args= якесь корисне навантаження: page, nacionalidade ext.
-    async ({ page, results }, thunkAPI) => {   
-        try {
-            // const { dispatch } = thunkAPI;
-            const data = await fetch(
-                `http://localhost:3000/users?page=${page}&amount=${results}`
-               // `https://randomuser.me/api/?seed=fm2024&page=${page}&results=${results}`
-            ).then(
-                (response) => response.json());
-            // dispatch() aqui nao usamos este dispach, so estamos baixar users e nao estamos despachar depois
-            return data.data;// in our project we have data.data
-        } catch (error) {
-            return thunkAPI.rejectWithValue(error.message);
-        }
+export const getUsers = createAsyncThunk(
+  "users/getUsers",
+  async ({ page, amount }, thunkAPI) => {
+    try {
+      const { data } = await getAllUsers(page, amount);
+      return data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.message);
     }
+  }
 );
 
 const usersSlice = createSlice({
-    name: 'users',
-    initialState: {
-        users: [],
-        error: null,
-        isPending: false
-    },
-    reducers: {}, //якісь дії,які можна зробити на клієнті не звертаючись до сервера 
-    extraReducers: (builder) => {
-        builder
-            .addCase(getUsers.pending, (state) => {
-                state.isPending = true;
-            });
-        builder
-            .addCase(getUsers.fulfilled, (state, action) => {
-                state.isPending = false;
-                state.users = action.payload
-            });
-        builder
-            .addCase(getUsers.rejected, (state, action) => {
-                state.isPending = false;
-                state.error = action.payload
-            });
-        }
+  name: "users",
+  initialState: {
+    users: [],
+    error: null,
+    isPending: false,
+  },
+  reducers: {}, //якісь дії,які можна зробити на клієнті не звертаючись до сервера
+  extraReducers: (builder) => {
+    builder.addCase(getUsers.pending, (state) => {
+      state.isPending = true;
+    });
+    builder.addCase(getUsers.fulfilled, (state, action) => {
+      state.isPending = false;
+      state.users = action.payload;
+    });
+    builder.addCase(getUsers.rejected, (state, action) => {
+      state.isPending = false;
+      state.error = action.payload;
+    });
+  },
 });
 
 export default usersSlice.reducer;

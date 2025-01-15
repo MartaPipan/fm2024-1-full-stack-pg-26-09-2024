@@ -42,9 +42,6 @@ module.exports.findAllUsers = async (req, res, next) => {
       },
       ...pagination,
     });
-    if (!allUsers) {
-      return next(createError(404, "Users not found."));
-    }
     res.status(200).send({ data: allUsers });
   } catch (error) {
     next(error);

@@ -4,9 +4,7 @@
     "password": "postgres",
     "database": "database_fm2024_sequelize",
     "host": "localhost",
-    "dialect": "postgres",
-    "migrationStorage":"json",
-    "seederStorage":"json"
+    "dialect": "postgres"
   },
   "test": {},
   "production": {}
