@@ -5,8 +5,8 @@ export const getUsers = createAsyncThunk(
   "users/getUsers",
   async ({ page, amount }, thunkAPI) => {
     try {
-      const { data } = await getAllUsers(page, amount);
-      return data.data;
+      const {data: { data }} = await getAllUsers(page, amount);
+      return data;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.message);
     }
