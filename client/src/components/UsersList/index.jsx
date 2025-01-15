@@ -5,7 +5,7 @@ import { getUsers } from '../../store/usersSlice';
 const UsersList = () => {
     const { users, error, isPending } = useSelector((state) => state.users);
     const dispatch = useDispatch();
-    const mapUsers = (user) => <li key={user.login.uuid}>{user.email}</li>;
+    const mapUsers = (user) => <li key={user.id}>{user.email}</li>;
 
     useEffect(() => {
         // effect

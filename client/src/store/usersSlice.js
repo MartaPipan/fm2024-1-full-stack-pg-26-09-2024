@@ -11,7 +11,7 @@ export const getUsers = createAsyncThunk('users/getUsers',
             ).then(
                 (response) => response.json());
             // dispatch() aqui nao usamos este dispach, so estamos baixar users e nao estamos despachar depois
-            return data.results;
+            return data.data;// in our project we have data.data
         } catch (error) {
             return thunkAPI.rejectWithValue(error.message);
         }
