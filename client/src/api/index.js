@@ -6,7 +6,11 @@ const httpClient = axios.create({
 });
 
 //method post de axios
-export const postUser = (values) => httpClient.post("/users", values);
+export const postUser = (values) => httpClient.post("/users", values,{
+  headers: {
+    "Content-Type": "multipart/form-data",  
+    }
+});
 
 export const getAllUsers = (options = {}) => {
   const defaultOptions = {

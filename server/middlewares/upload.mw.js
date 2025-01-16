@@ -7,8 +7,9 @@ const mimetype = ['image/jpeg', 'image/png'];
 
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
-        cb(null, path.resolve(__dirname, '..', IMAGE_PATH));
-        //    '..', IMAGE_PATH    ->>     ../public/images/
+        cb(null, path.resolve(__dirname, '../..', IMAGE_PATH));
+        //    '..' ->> vamos quardar image no server; ou '../..'>>>vamos qurdar image no raiz de projeto,  IMAGE_PATH    ->>     ../public/images/
+               
     },
     filename: function (req, file, cb) {
         cb(null, Date.now() + '-' + file.originalname)
