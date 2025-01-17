@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { getAllUsers, postUser } from "../api";
+import { getAllUsers, postUser, getOneUser, updateOneUser, deleteOneUser } from "../api";
 import { decorateAsyncThunk, pedingReducer, rejectedReducer } from "./helpers";
 
 export const createUser = decorateAsyncThunk({
@@ -12,29 +12,73 @@ export const getUsers = decorateAsyncThunk({
   asyncThunk: getAllUsers,
 });
 
+export const getUser = decorateAsyncThunk({
+  type: "users/getUser",
+  asyncThunk: getOneUser,
+});
+
+export const updateUser = decorateAsyncThunk({
+  type: "users/updateUser",
+  asyncThunk: updateOneUser,
+});
+
+export const deleteUser = decorateAsyncThunk({
+  type: "users/deleteUser",
+  asyncThunk: deleteOneUser,
+});
+
+
 const usersSlice = createSlice({
   name: "users",
   initialState: {
     users: [],
     error: null,
     isPending: false,
+    userAuth: null,
+    userCurrent: null,
   },
   reducers: {}, //якісь дії,які можна зробити на клієнті не звертаючись до сервера
   extraReducers: (builder) => {
     builder.addCase(createUser.pending, pedingReducer);
     builder.addCase(getUsers.pending, pedingReducer);
+    builder.addCase(getUser.pending, pedingReducer);
+    builder.addCase(updateUser.pending, pedingReducer);
+    builder.addCase(deleteUser.pending, pedingReducer);
 
     builder.addCase(createUser.rejected, rejectedReducer);
     builder.addCase(getUsers.rejected, rejectedReducer);
+    builder.addCase(getUser.rejected, rejectedReducer);
+    builder.addCase(updateUser.rejected, rejectedReducer);
+    builder.addCase(deleteUser.rejected, rejectedReducer);
 
     builder.addCase(createUser.fulfilled, (state, action) => {
       state.isPending = false;
-      state.users.push(action.payload);
+      state.error = null;
+      state.userAuth = action.payload;//state.users.push(action.payload)>>> dou um nome para user que ja se registro
     });
 
     builder.addCase(getUsers.fulfilled, (state, action) => {
       state.isPending = false;
+      state.error = null;
       state.users = action.payload;
+    });
+
+    builder.addCase(getUser.fulfilled, (state, action) => {
+      state.isPending = false;
+      state.error = null;
+      state.userCurrent = action.payload;
+    });
+    
+    builder.addCase(updateUser.fulfilled, (state, action) => {
+      state.isPending = false;
+      state.error = null;
+      state.userCurrent = action.payload;
+    });
+    
+    builder.addCase(deleteUser.fulfilled, (state, action) => {
+      state.isPending = false;
+      state.error = null;
+      state.users = state.users.filter(user => user.id !== action.payload.id);
     });
   },
 });

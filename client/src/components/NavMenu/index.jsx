@@ -7,7 +7,10 @@ const NavMenu = () => {
                 <NavLink to="/">Home</NavLink>
             </li>
             <li>
-                <NavLink to="/">User Register</NavLink>
+                <NavLink to="/users">Users</NavLink>
+            </li>
+            <li>
+                <NavLink to="/users">User Register</NavLink>
             </li> 
         </ul>
     </nav>;
