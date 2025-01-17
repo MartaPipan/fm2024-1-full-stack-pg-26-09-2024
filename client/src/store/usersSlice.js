@@ -1,33 +1,16 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit";
 import { getAllUsers, postUser } from "../api";
+import { decorateAsyncThunk, pedingReducer, rejectedReducer } from "./helpers";
 
-export const createUser = createAsyncThunk(
-  "users/createUser",
-  async ( values, thunkAPI) => {
-    try {
-      const {
-        data: { data },
-      } = await postUser(values);
-      return data;
-    } catch (error) {
-      return thunkAPI.rejectWithValue(error.message);
-    }
-  }
-);
+export const createUser = decorateAsyncThunk({
+  type: "users/createUser",
+  asyncThunk: postUser,
+});
 
-export const getUsers = createAsyncThunk(
-  "users/getUsers",
-  async ({ page, amount }, thunkAPI) => {
-    try {
-      const {
-        data: { data },
-      } = await getAllUsers(page, amount);
-      return data;
-    } catch (error) {
-      return thunkAPI.rejectWithValue(error.message);
-    }
-  }
-);
+export const getUsers = decorateAsyncThunk({
+  type: "users/getUsers",
+  asyncThunk: getAllUsers,
+});
 
 const usersSlice = createSlice({
   name: "users",
@@ -38,27 +21,20 @@ const usersSlice = createSlice({
   },
   reducers: {}, //якісь дії,які можна зробити на клієнті не звертаючись до сервера
   extraReducers: (builder) => {
-    builder.addCase(createUser.pending, (state) => {
-      state.isPending = true;
-    });
+    builder.addCase(createUser.pending, pedingReducer);
+    builder.addCase(getUsers.pending, pedingReducer);
+
+    builder.addCase(createUser.rejected, rejectedReducer);
+    builder.addCase(getUsers.rejected, rejectedReducer);
+
     builder.addCase(createUser.fulfilled, (state, action) => {
       state.isPending = false;
-      state.users.push (action.payload);
+      state.users.push(action.payload);
     });
-    builder.addCase(createUser.rejected, (state, action) => {
-      state.isPending = false;
-      state.error = action.payload;
-    });
-    builder.addCase(getUsers.pending, (state) => {
-      state.isPending = true;
-    });
+
     builder.addCase(getUsers.fulfilled, (state, action) => {
       state.isPending = false;
       state.users = action.payload;
-    });
-    builder.addCase(getUsers.rejected, (state, action) => {
-      state.isPending = false;
-      state.error = action.payload;
     });
   },
 });
