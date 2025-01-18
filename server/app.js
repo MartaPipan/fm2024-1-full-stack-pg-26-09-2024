@@ -3,18 +3,20 @@ const cors = require("cors");
 const router = require("./routes");
 const { handleErrors } = require("./handleErrors");
 const app = express();
+
 app.use(cors());
 
-app.use(express.static("public"));
+// Налаштування доступу до статичних файлів
+app.use(express.static("../public"));
 app.use(express.json());
 
 
-//router
+// Роутери
 app.use("/", router);
 // if we have admin panel
 // app.use('/admin', adminRouter);
 
-//handleError
+// Обробка помилок
 app.use(handleErrors);
 
 module.exports = app;

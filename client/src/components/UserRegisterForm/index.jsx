@@ -1,6 +1,7 @@
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import { useDispatch } from "react-redux";
 import { createUser } from "../../store/usersSlice";
+import { userValidationSchema } from "../../validations/userValidation";
 
 const initialValues = {
   firstName: "",
@@ -24,7 +25,10 @@ onSubmit:
   };
 
   return (
-    <Formik initialValues={initialValues} onSubmit={onSubmit}>
+    <Formik initialValues={initialValues}
+      validationSchema={userValidationSchema}
+      onSubmit={onSubmit}
+    >
       {(formikProps) => {
         const handleAvatar = ({ target }) => {
           formikProps.setFieldValue("avatar", target.files[0]);

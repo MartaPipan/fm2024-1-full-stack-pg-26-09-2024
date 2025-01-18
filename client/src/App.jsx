@@ -18,9 +18,7 @@ function App() {
         <Route path="/users" element={<UserRegisterPage />} />
         <Route path="/users/:userId" element={<UserProfilePage />} />
         <Route path="/users/:userId" element={<UserDeletePage />} />
-        <Route path="/users/:userId" element={<UserUpdatePage/>} />
-
-
+        <Route path="/users/:userId" element={<UserUpdatePage />} />
       </Routes>
     </BrowserRouter>
   );

@@ -68,18 +68,24 @@ const usersSlice = createSlice({
       state.error = null;
       state.userCurrent = action.payload;
     });
-    
+   
+      // Оновлюємо список користувачів:
     builder.addCase(updateUser.fulfilled, (state, action) => {
       state.isPending = false;
       state.error = null;
-      state.userCurrent = action.payload;
+      state.users = state.users.map((user) => user.id === action.payload.id ? action.payload : user);
     });
+    /**
+     * Після успішного виконання updateUser оновлюємо список користувачів у стані state.users.
+Знаходимо користувача за id, який був оновлений (user.id === action.payload.id).
+Замінюємо його новими даними з action.payload (які повертає сервер після оновлення).
+     */
     
     builder.addCase(deleteUser.fulfilled, (state, action) => {
       state.isPending = false;
       state.error = null;
-      state.users = state.users.filter(user => user.id !== action.payload.id);
-    });
+      state.users = state.users.filter((user) => user.id !== action.payload.id);
+    });/**Використовуємо метод filter, щоб залишити всіх користувачів, чий id не збігається з id користувача, який потрібно видалити. */
   },
 });
 
