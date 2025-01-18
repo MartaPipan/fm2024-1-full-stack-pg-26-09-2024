@@ -103,10 +103,11 @@ module.exports.findTask = async (req, res, next) => {
 module.exports.deleteTask = async (req, res, next) => {
   try {
     const { taskInstance } = req;
-    await taskInstance.destroy();
+    //await taskInstance.destroy();
     if (!taskInstance) {
       return next(createError(404, 'Task not found.'));
     }
+    await taskInstance.destroy();
     res.status(200).send({ data: taskInstance });
   } catch (error) {
     next(error);

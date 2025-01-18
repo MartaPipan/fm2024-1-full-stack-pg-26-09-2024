@@ -38,3 +38,20 @@ export const getAllUsers = (options = {}) => {
     return httpClient.get(`/users?${queryString.stringify(resultOptions)}`);
   }
 };
+
+export const getOneTask = (userId, taskId) => httpClient.get(`/users/${userId}/tasks/${taskId}`);
+export const updateOneTask = (userId,taskId, values) => httpClient.put(`users/${userId }/tasks/${taskId}`, values);
+export const deleteOneTask = (userId,taskId) => httpClient.delete(`users/${userId}/tasks/${taskId}`);   
+export const postTask = (userId, values) => httpClient.post(`users/${userId}/tasks`, values);
+
+
+export const getAllTasks = (userId, options = {}) => {
+  const defaultOptions = {
+    page: 1,
+    amount: 4,
+  };
+  const resultOptions = { ...defaultOptions, ...options };
+
+  return httpClient.get(`/users/${userId}/tasks?${queryString.stringify(resultOptions)}`);
+};
+
