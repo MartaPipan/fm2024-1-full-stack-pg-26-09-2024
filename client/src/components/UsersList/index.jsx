@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { getUsers } from "../../store/usersSlice";
+import { getUsers, deleteUser } from "../../store/usersSlice";
 
 const UsersList = () => {
   const { users, error, isPending } = useSelector((state) => state.users);
@@ -15,13 +15,19 @@ const UsersList = () => {
   useEffect(() => {
     dispatch(getUsers({ page: currentPage, amount: amountPerPage }));
   }, [dispatch, currentPage]);
+  
+  
+  // Обробник видалення користувача
+  const handleDelete = (id) => {
+    dispatch(deleteUser(id));
+    alert(`User with ID ${id} has been deleted successfully!`);
+  };
 
   // Відображення користувачів
   const mapUsers = (user) => (
     <li key={user.id}>
       <Link to={`/users/${user.id}`}>{user.email}</Link>
-
-      adicione delete user +butom for delete user after user link  >>>
+      <button onClick={() => handleDelete(user.id)}>Delete</button> 
     </li>
   );
 
